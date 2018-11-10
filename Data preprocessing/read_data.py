@@ -13,7 +13,6 @@ def load_images(path):
 
     for dir in main_dir:
         data_path = os.path.join(path,dir)
-        print(data_path)
         img_load = nib.load(data_path)
         n = img_load.get_data().astype(np.float32)
         img_list.append(n) #image info stored in a list
