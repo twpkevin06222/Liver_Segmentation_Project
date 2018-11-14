@@ -1,3 +1,4 @@
+
 import os
 import nibabel as nib
 import numpy as np
@@ -8,6 +9,7 @@ def load_images(path):
     main_dir = sorted(os.listdir(path)) #file directory 
 
     img_list = []
+    img_affine = []
     h = []
     s = []
 
@@ -15,11 +17,13 @@ def load_images(path):
         data_path = os.path.join(path,dir)
         img_load = nib.load(data_path)
         n = img_load.get_data().astype(np.float32)
+        affine = img_load.affine
         img_list.append(n) #image info stored in a list
+        img_affine.append(affine)
         h.append(img_load.shape[1]) #since width and height are the same, only height is listed
         s.append(img_load.shape[2]) #slices
 
-    return img_list, h, s
+    return img_list, h, s, img_affine
 
 
 def show_histograms(h, s):
