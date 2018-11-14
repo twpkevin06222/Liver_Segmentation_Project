@@ -21,10 +21,11 @@ def resize(img_list):
 img_list, height, depth, img_affine= load_images("../data/train/img")
 img_list = resize(img_list)
 
+outpath = '../data/train/img_new'
 def save(img_list, img_affine):
     for i in range(len(img_list)):
         img_new = nib.Nifti1Image(img_list[i], img_affine[i])
-        nib.save(img_new, 'img_new/%d.nii.gz' %(i))
+        nib.save(img_new, 'outpath/%d.nii.gz' %(i))
     pass
     
 new_img_list = save(img_list, img_affine) 
