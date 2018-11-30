@@ -33,13 +33,6 @@ def three_to_two(path, label='FALSE'):
             images.append(a[:,:,i])     
     images = np.asarray(images)
     images = images.reshape(-1, 128,128, 1) # dimension to feed into the network
-# =============================================================================
-#     if label=='TRUE':
-#         img_labels = np.place(images, images>1, 1) #tumor label not needed
-#         return img_labels
-#     else:
-#         return images
-# =============================================================================
     return images
 
 def min_max_norm(images):
@@ -48,13 +41,18 @@ def min_max_norm(images):
     images = (images - mi)/ (m - mi)
     return images
 
+def label_outliers(img_labels):
+    img_labels[img_labels>1]=1
+    img_labels[img_labels<0]=0
+    return img_labels
+
 #Image for training 
 images = three_to_two(path='img_new/*')
-#images = min_max_norm(images)
+images = min_max_norm(images)
 
 #labels
 img_labels = three_to_two(path='img_new_label/*')
-#img_labels = three_to_two(path='img_new_label/*', label='TRUE')
+img_labels = label_outliers(img_labels)
 
 #Parameters
 batch_size = 128
@@ -175,11 +173,13 @@ def Dice(y_true, y_pred):
 # autoencoder.compile(loss='categorical_crossentropy', optimizer = RMSprop())
 # autoencoder_train = autoencoder.fit(train_x, train_ground, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_x, valid_ground))
 # =============================================================================
+
 unet = Unet(input_img)
 unet.compile(loss='mean_squared_error', optimizer = RMSprop(),metrics=['accuracy'])
 unet_train = unet.fit(train_x, train_ground, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_x, valid_ground))
 
 unet.save('model.h5')
+
 # =============================================================================
 # loss = autoencoder_train.history['loss']
 # val_loss = autoencoder_train.history['val_loss']
