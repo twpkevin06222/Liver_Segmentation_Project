@@ -1,3 +1,4 @@
+import h5py
 import os
 import cv2
 from keras.layers import Input,Dense,Flatten,Dropout,merge,Reshape,Conv2D,MaxPooling2D,UpSampling2D,Conv2DTranspose
@@ -177,6 +178,8 @@ def Dice(y_true, y_pred):
 unet = Unet(input_img)
 unet.compile(loss='mean_squared_error', optimizer = RMSprop(),metrics=['accuracy'])
 unet_train = unet.fit(train_x, train_ground, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_x, valid_ground))
+
+unet.save('model.h5')
 # =============================================================================
 # loss = autoencoder_train.history['loss']
 # val_loss = autoencoder_train.history['val_loss']
