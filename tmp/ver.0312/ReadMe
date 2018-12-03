@@ -1,6 +1,6 @@
 File created: 03/12/2018
 
 Main program: seg04.ipynb
-Traning Data: img_new 
-Labels: img_new_label
+Traning Data: tmp_image/img_new 
+Labels: tmp_image/img_new_label
 check point saved in seg.h5
